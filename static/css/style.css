@@ -1,0 +1,377 @@
+
+body {
+  position: relative;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #484848;
+  background-color: #ededed;
+  font-family: 'Ubuntu';
+  font-size: 14px;
+  font-weight: 100;
+}
+
+/* ===============
+ *      jumbo
+ * =============== */
+
+.jumbo {
+  padding: 48px;
+  text-align: center;
+}
+
+.jumbo > h1 {
+  font-size: 42px;
+}
+
+/* ===============
+ *    paragraph
+ * =============== */
+
+.paragraph {
+  position: relative;
+  padding: 24px;
+  padding-bottom: 0;
+  margin-top: 48px;
+}
+
+.paragraph > header {
+  color: #989898;
+}
+
+.paragraph > section {
+  padding: 16px;
+  margin-top: 16px;
+}
+
+@media all and (max-width: 768px) {
+  .paragraph {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .paragraph > section {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* ===============
+ *    identify
+ * =============== */
+
+.identify {
+  text-align: center;
+}
+
+.identify > .submit {
+  display: inline-block;
+  padding: 16px 24px;
+  margin-left: -4px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  color: #fff;
+  background-color: #484848;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.identify > .note {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.identify > .input {
+  display: inline-block;
+  width: 240px;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 4px;
+  color: #484848;
+  background-color: #fff;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: inherit;
+  text-align: center;
+  outline: none;
+  transition: box-shadow 0.4s;
+}
+
+.identify > .input:focus {
+  box-shadow: 0 0 8px -2px #bcbcbc;
+}
+
+@media all and (max-width: 768px) {
+  .identify > .submit {
+    margin-left: 0;
+    margin-top: 16px;
+    border-radius: 4px;
+  }
+
+  .identify > .input {
+    width: 100%;
+  }
+}
+
+/* ===============
+ *     manage
+ * =============== */
+
+.manage {
+  text-align: center;
+}
+
+.manage > .table-wrapper {
+  display: block;
+  overflow: scroll;
+}
+
+.manage > .table-wrapper > .js-table {
+  min-width: 540px;
+}
+
+.manage > .table-wrapper .action {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.manage .form {
+  margin-top: 24px;
+}
+
+.manage .form > .title {
+  display: inline-block;
+  margin-left: 16px;
+}
+
+.manage .form > .title:first-child {
+  margin-left: 0;
+}
+
+.manage .form > .no {
+  width: 120px;
+  text-align: right;
+}
+
+.manage .form > .action {
+  display: inline-block;
+  margin-left: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.manage .form > .js-search {
+  width: 320px;
+}
+
+.manage .form > .input {
+  display: inline-block;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 2px;
+  color: #484848;
+  background-color: #fff;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: inherit;
+  outline: none;
+  transition: box-shadow 0.4s;
+}
+
+.manage .form > .input:focus {
+  box-shadow: 0 0 8px -2px #bcbcbc;
+}
+
+@media all and (max-width: 768px) {
+  .manage .form > .title {
+    display: block;
+    margin-left: 0;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .manage .form > .js-search {
+    display: block;
+    width: 240px;
+    margin: auto;
+    margin-bottom: 16px;
+  }
+
+  .manage .form > .no {
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+
+  .manage .form > .action {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+}
+
+/* ===============
+ *    generate
+ * =============== */
+
+.generate {
+  position: relative;
+}
+
+.generate > .submit {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: auto;
+  border-radius: 48px;
+  color: #fff;
+  background-color: #484848;
+  text-align: center;
+  cursor: pointer;
+}
+
+.generate > .submit > .text {
+  display: block;
+  padding-top: 24px;
+  font-size: 36px;
+}
+
+.generate > .timetable-wrapper {
+  margin-top: 24px;
+}
+
+/* ===============
+ *     footer
+ * =============== */
+
+.footer {
+  padding-right: 16px;
+  padding-bottom: 8px;
+  margin-top: 48px;
+  text-align: right;
+}
+
+.footer > .link {
+  color: inherit;
+}
+
+/* ===============
+ *    js-table
+ * =============== */
+
+.js-table {
+  position: relative;
+  display: block;
+  border: 1px solid #bcbcbc;
+  border-radius: 4px;
+}
+
+.js-table > .row {
+  position: relative;
+  display: block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  border-top: 1px solid #bcbcbc;
+}
+
+.js-table > .row:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.js-table > .row:first-child {
+  border-top: 0px;
+}
+
+.js-table > .row.highlight {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  color: #fff;
+  background-color: #bcbcbc;
+}
+
+.js-table > .row > .col-2,
+.js-table > .row > .col-4,
+.js-table > .row > .col-6,
+.js-table > .row > .col-8 {
+  float: left;
+  min-height: 1px;
+}
+
+.js-table > .row > .col-2 {
+  width: 16.66%;
+}
+
+.js-table > .row > .col-4 {
+  width: 33.33%;
+}
+
+.js-table > .row > .col-6 {
+  width: 50.00%;
+}
+
+.js-table > .row > .col-8 {
+  width: 66.66%;
+}
+
+/* ===============
+ *    js-search
+ * =============== */
+
+.js-search {
+  position: relative;
+  display: inline-block;
+}
+
+.js-search > .input {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 2px;
+  color: #484848;
+  background-color: #fff;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: inherit;
+  outline: none;
+  transition: box-shadow 0.4s;
+}
+
+.js-search > .input:focus {
+  box-shadow: 0 0 16px -2px #bcbcbc;
+}
+
+.js-search > .result {
+  z-index: 10;
+  position: absolute;
+  display: block;
+  width: 100%;
+  max-height: 120px;
+  padding: 16px;
+  margin: 0;
+  border-top: 1px solid #bcbcbc;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px -4px #bcbcbc;
+  overflow: scroll;
+}
+
+.js-search > .result > .list {
+  margin-top: 8px;
+  list-style: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.js-search > .result > .list:hover {
+  color: #989898;
+  background-color: rgba(72, 72, 72, 0.02);
+}
+
+.js-search > .result > .list:first-child {
+  margin-top: 0;
+}
