@@ -135,7 +135,7 @@ $(function () {
 
         var width = $(this).width() - jQuery('.tt-days', this).width() - ttDaysExtras;
 
-        alert(width);
+        console.log(width);
 
         var height = $(this).height();
         var hours = $(this).data('hours');
