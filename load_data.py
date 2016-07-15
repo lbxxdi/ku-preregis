@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
     to_line = None
 
-    f = open(file_name,'r+')
+    f = open(file_name,'r+',encoding = "utf-8")
     lines = f.readlines()[:to_line]
 
     client = MongoClient('localhost', 27017)
