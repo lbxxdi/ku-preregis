@@ -1,28 +1,11 @@
 
 
-
-var s_list = {
-	save :function()
-	{
-		$.ajax({
-		  url      : "./record.php",
-		  type     : "POST",
-		  data     : { data: JSON.stringify(s_list.data)},
-		  dataType : "text",
-		  success  : function(id) {
-			window.history.pushState('KU-PreRegis', 'KU-PreRegis', '?id='+id);
-		  }
-		})
-		return true;
-	},
-};
-
 // ###############  Schedule ##########################
 var calls  = 0,
     sem    = 2,
     subs   = [],
     T_list = [],
-	t_list = [],
+  t_list = [],
     days   = { 'จ': 0, 'อ': 1, 'พ': 2, 'พฤ': 3, 'ศ': 4, 'ส': 5 ,'อา':6},
     TID    = 0,
     calls  = 0,
@@ -51,7 +34,7 @@ s_list.show()
               $toast.parent().fadeOut();
             }, time);
   }
-
+  
   function reload() {
     $('.timetable').each(function (e) {
       $(this).initialiseTT();
@@ -60,67 +43,13 @@ s_list.show()
   }
 
 
-//############### ______TABLE_____ ###############
-  function table(id, str, sub, name) {
-    var l_day = str.indexOf("."),
-        day   = str.slice(0,l_day);
-
-    time   = str
-    str    = str.slice(l_day + 1);
-    str    = str.split("-");
-    day    = days[day];
-
-    str[0] = str[0].split(".");
-    str[1] = str[1].split(".");
-
-
-    var start = parseInt(str[0][0]) + parseInt(str[0][1]) / 60.0,
-        end   = parseInt(str[1][0]) + parseInt(str[1][1]) / 60.0;
-
-    if(end == 100.0) end = 10
-
-    sub = [name, '' + id + ' '+'Sec ' + sub[0], sub[2]+" "+sub[3].split("<br>").join(", ")].join("<br>");
-
-    $item = $('<li></li>');
-
-    $item.attr('class', 'tt-event');
-    $item.attr('data-id', TID);
-    $item.attr('data-day', day);
-    $item.attr('data-start', start);
-    $item.attr('data-duration', end - start);
-    $item.attr('data-rstart',start);
-    $item.attr('data-rend',end);
-
-    $item.html(sub);
-
-    T_list.push($item);
-  }
-
-
-//#########___________OLD__________END_____________ ############
-s_list.show = function()
-{
-    status = "plot";
-    if(s_list.data.length>0)
-        $('#id-loading').fadeIn();
-
-    T_list = [];
-    TID    = 0;
-
-
-    s_list.data.forEach(function(t){
-        load_subject(t.id,t.lecSec,t.labSec);
-    })
-
-    $.ajax({url:"js/noop"})
-
-
-}
 
 localStorage.clear()
-
-$('.main-loading').show();
 $(document).ajaxComplete(function () {
+    if(calls == 0 && status == "load_id")
+    {
+
+    }
 
     if(calls== 0 && status == "plot")
     {
@@ -148,6 +77,8 @@ $(document).ajaxComplete(function () {
         $(".tt-times").append('<div class="tt-time" data-time="'+(i-min_t)+'">'+i+'<span class="hidden-phone">:00</span></div>');
       }
       $(".timetable").data('hours',(max_t-min_t))
+
+      $('#id-loading').fadeOut();
 
       $('.timetable').resize(function (e) {
           $(this).resizeTimetable();

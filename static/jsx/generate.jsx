@@ -4,26 +4,25 @@ var Generate = React.createClass({
   getInitialState: function() {
    return {
       subjectList : [],
-      ttEvents : [], 
-      eventId : 0,
+      ttEvents : [],
+      ttHours : 12,
+      minStart : 8,
    };
  },
 
  componentDidMount: function() {
-    this.reload();
 
-    $(".submit").click();
- },
+    $('.timetable').resize(function (e) {
+        $(this).resizeTimetable();
+    });
 
- componentDidUpdate: function() {
-    console.log("ajaxCount",ajaxCount);
-    this.reload();  
-    if(ajaxCount==0){
-
-    }
+    // TEST only
+    //$(".submit").click();
+    $('html, body').animate({ scrollTop: $('.timetable-wrapper').offset().top }, 1000);
  },
 
  componentWillUnmount: function() {
+
 
  },
 
@@ -38,145 +37,123 @@ var Generate = React.createClass({
     return subjectList;
  },
 
- createEvent: function(event) {
-    console.log(event);
 
+ getEvent: function(subject,type) {
 
-    // this.setState({
-    //   ttEvents : this.state.ttEvents.concat([event]),
-    // });
- },
-
- getSectionDetail: function(subject,type) {
-
+  let event;
     $.get(`/section/${subject.code}/${subject[type]}/${type}`,(result) => {
+
+
       result.name = subject.name;
       result.eventId = subject.eventId;
 
-      result.period.forEach( (period) => {
+      event = result.period.map( (period) => {
         
-        let event = $.extend(true, {}, result);
+        let tempEvent = $.extend(true, {}, result);
 
-        delete event.period;
+        delete tempEvent.period;
 
         for(let field in period) {
-          event[field] = period[field];
+          tempEvent[field] = period[field];
         }
 
-        this.createEvent(event);
+        return tempEvent
       })
-
-
-
     })
+
+  return event;
  
+ },
+
+ componentDidUpdate: function() {
+   this.reload();
  },
 
  submit: function() {
     let subjectList = this.getSubjectList();
 
-    console.log(subjectList);
-
-    this.setState({
-      eventId : 0,
-      minStart : Infinity,
-      maxEnd : 0,
-
-    });
-
-    subjectList.forEach((subject) => {
-
-      subject.eventId = this.state.eventId;
-      if(subject.lec!=='-') this.getSectionDetail(subject,"lec");
-      if(subject.lab!=='-') this.getSectionDetail(subject,"lab");
-
-      this.setState({eventId:this.state.eventId + 1});
-    })
-    //todo
-
- },
-
- reload: function () {
-
-    console.log("reload");
-   $('.timetable').each(function (e) {
-     $(this).initialiseTT();
-     $(this).resizeTimetable();
-   });
- },
-
- render: function() {
+    // this.reload();
 
     let minStart = Infinity;
     let maxEnd = 0;
 
-    this.state.ttEvents.forEach((event) => {
+    let eventId = 0;
 
+    let ttEvents = [];
+    
+    subjectList.forEach((subject) => {
+
+      subject.eventId = eventId;
+
+      if(subject.lec!=='-') ttEvents=ttEvents.concat(this.getEvent(subject,"lec"));
+      if(subject.lab!=='-') ttEvents=ttEvents.concat(this.getEvent(subject,"lab"));
+
+      eventId+=1;
+    })
+
+    console.log(ttEvents);
+    ttEvents.forEach((event) => {
       let start = Math.floor(event.start);
       let end = Math.ceil(event.end);
 
       if(start < minStart) minStart = start;
       if(end > maxEnd)     maxEnd = end;
-      
     });
 
-   console.log("minStart",minStart); 
+    ttEvents.map((event) => {
+      event.duration = event.end-event.start;
+      event.start=event.start-minStart;
+      delete event.end;
+      return event;
+    })
 
+    // $(".tt-events").empty();
+    // $(".tt-times").empty();
+
+    console.log("ttHours : ",maxEnd-minStart);
+    this.setState({
+      ttEvents,
+      ttHours : maxEnd-minStart,
+      minStart : minStart,
+    });
+    
+ },
+
+ reload: function () {
+
+  console.log("reload");
+
+
+   $('.timetable').each(function (e) {
+     $(this).initialiseTT();
+     $(this).resizeTimetable();
+   });
+
+ },
+
+ render: function() {
 
    return (
       <section className='generate'>
         <div className='submit' onClick={this.submit}><span className='text'>Go!</span></div>
-        <div className='submit' onClick={this.reload}><span className='text'>Test</span></div>
+        <div className='submit' onClick={this.reload}><span className='text'>Render</span></div>
         <div className='timetable-wrapper'>
-          <div className='timetable' data-days='7' data-hours='12'>
+          <div className='timetable' data-days='7' data-hours={this.state.ttHours}>
             <ul className='tt-events'>
               { this.state.ttEvents.map((event) => {
-                
-                console.log(minStart,event.start,event.start-minStart);
-
                 return (<li className="tt-event" key ={""+ event.eventId + event.day + event.start}
-                          data-id={event.eventId} data-day={event.day} data-start={event.start-minStart} data-duration={event.end - event.start} 
+                          data-id={event.eventId} data-day={event.day} data-start={event.start} data-duration={event.duration} 
                           rel="tooltip" unselectable="on" >
                           {event.name}<br/>{event.code} Sec {event.sec}<br/>{event.room}&nbsp; {event.teacher}&nbsp;</li>);
               })}
             </ul>
             <div className='tt-times'>
-              <div className='tt-time' data-time='0'>
-                08<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='1'>
-                09<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='2'>
-                10<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='3'>
-                11<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='4'>
-                12<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='5'>
-                13<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='6'>
-                14<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='7'>
-                15<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='8'>
-                16<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='9'>
-                17<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='10'>
-                18<span className='hidden-phone'>:00</span>
-              </div>
-              <div className='tt-time' data-time='11'>
-                19<span className='hidden-phone'>:00</span>
-              </div>
+
+              {Array(this.state.ttHours).fill(1).map((value,i)=>{
+                return (<div className='tt-time' data-time={i} key={this.state.ttHours+i}>
+                        {i+this.state.minStart}<span className='hidden-phone'>:00</span>
+                        </div>);
+              })}
             </div>
             <div className='tt-days'>
               <div className='tt-day' data-day='0'>
