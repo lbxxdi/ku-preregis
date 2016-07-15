@@ -3,9 +3,9 @@ var Manage = React.createClass({
   getInitialState: function() {
     return {
      subjectList: [
-       {"code":"01204111","name":"Computers & Programming","lec":"1","lab":"11"},
-       {"code":"01005471","name":"Computer Programming in Agricultural System","lec":"1","lab":"-"},
-       {"code":"01999011","name":"Food for Mankind","lec":"1","lab":"-"}
+       // {"code":"01204111","name":"Computers & Programming","lec":"1","lab":"11"},
+       // {"code":"01005471","name":"Computer Programming in Agricultural System","lec":"1","lab":"-"},
+       // {"code":"01999011","name":"Food for Mankind","lec":"1","lab":"-"}
       ],
     };
   },
@@ -61,7 +61,6 @@ var Manage = React.createClass({
               <div className="col-2">Laboratory Section</div>
               <div className="col-2">Edit</div>
             </div>
-
               { this.state.subjectList.map((subject) => {
                 return (<div className="row" key={subject.code + subject.lec + subject.lab}>
                     <div className="col-2">{subject.code}</div>

@@ -14,6 +14,7 @@
 .tt-times
 {
 	position:absolute;
+	height: 30px;
 	margin:0px;
 	padding: 0px 0px 0px 116px;
     border-width: 0px;

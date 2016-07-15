@@ -54,7 +54,6 @@ var SelectSubject = React.createClass({
      this.setState({ 
        filteredSubjects: this.search(e.target.value),
      });
-
   },
 
   componentDidMount: function() {
@@ -114,7 +113,6 @@ var SelectSubject = React.createClass({
      if(filteredItem.length>0) {
        this.selectSubject(filteredItem[0]);
      }
-
    }
   },
 

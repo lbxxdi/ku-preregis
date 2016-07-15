@@ -12,10 +12,6 @@ var Main = React.createClass({
     return this.refs.manage.getSubjectList();
  },
 
- componentWillUnmount: function() {
-
- },
-
  render: function() {
    return (
       <span>

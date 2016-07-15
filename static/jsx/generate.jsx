@@ -1,24 +1,24 @@
-// var 
-
 var Generate = React.createClass({
   getInitialState: function() {
    return {
       subjectList : [],
       ttEvents : [],
-      ttHours : 12,
+      ttHours : 8,
       minStart : 8,
    };
- },
+},
 
  componentDidMount: function() {
-
+    $('.timetable-wrapper').hide();
     $('.timetable').resize(function (e) {
         $(this).resizeTimetable();
     });
 
+    this.render();
+
     // TEST only
     //$(".submit").click();
-    $('html, body').animate({ scrollTop: $('.timetable-wrapper').offset().top }, 1000);
+    //$('html, body').animate({ scrollTop: $('.timetable-wrapper').offset().top }, 1000);
  },
 
  componentWillUnmount: function() {
@@ -64,9 +64,18 @@ var Generate = React.createClass({
   return event;
  
  },
+ setHours: function(hours) {
 
+    let data = this.state.ttHours;
+    if (hours) {
+      data = hours;
+    }
+
+    $('.timetable').data('hours',data);
+
+ },
  componentDidUpdate: function() {
-   this.reload();
+
  },
 
  submit: function() {
@@ -80,6 +89,8 @@ var Generate = React.createClass({
     let eventId = 0;
 
     let ttEvents = [];
+
+    subjectList.sort(function(a, b) {return a.start-b.start;});
     
     subjectList.forEach((subject) => {
 
@@ -91,7 +102,6 @@ var Generate = React.createClass({
       eventId+=1;
     })
 
-    console.log(ttEvents);
     ttEvents.forEach((event) => {
       let start = Math.floor(event.start);
       let end = Math.ceil(event.end);
@@ -107,14 +117,16 @@ var Generate = React.createClass({
       return event;
     })
 
-    // $(".tt-events").empty();
-    // $(".tt-times").empty();
+    
 
-    console.log("ttHours : ",maxEnd-minStart);
     this.setState({
       ttEvents,
-      ttHours : maxEnd-minStart,
-      minStart : minStart,
+      ttHours : (maxEnd ? maxEnd-minStart : 8),
+      minStart : (maxEnd ? minStart : 8),
+    },function(){
+      this.setHours();
+      this.reload();
+      $('.timetable-wrapper').slideDown();
     });
     
  },
@@ -136,7 +148,6 @@ var Generate = React.createClass({
    return (
       <section className='generate'>
         <div className='submit' onClick={this.submit}><span className='text'>Go!</span></div>
-        <div className='submit' onClick={this.reload}><span className='text'>Render</span></div>
         <div className='timetable-wrapper'>
           <div className='timetable' data-days='7' data-hours={this.state.ttHours}>
             <ul className='tt-events'>

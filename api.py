@@ -93,7 +93,7 @@ def list_subject():
 
 @app.route("/test")
 def test():
-        return jsonify(request.args)
+    return jsonify(request.args)
 
 
 if __name__ == "__main__":

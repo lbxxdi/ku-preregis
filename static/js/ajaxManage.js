@@ -10,7 +10,5 @@ var loadingComplete = function() {
 
 jQuery.ajaxSetup({async:false});
 
-
-
 window.loadingStart = loadingStart;
 window.loadingComplete = loadingComplete;
