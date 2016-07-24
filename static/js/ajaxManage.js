@@ -8,7 +8,7 @@ var loadingComplete = function() {
 	$('.main-loading').hide();
 }
 
-jQuery.ajaxSetup({async:false});
+//jQuery.ajaxSetup({async:false});
 
 window.loadingStart = loadingStart;
 window.loadingComplete = loadingComplete;

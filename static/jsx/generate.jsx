@@ -5,6 +5,7 @@ var Generate = React.createClass({
       ttEvents : [],
       ttHours : 8,
       minStart : 8,
+      ajaxResult : [],
    };
 },
 
@@ -15,10 +16,6 @@ var Generate = React.createClass({
     });
 
     this.render();
-
-    // TEST only
-    //$(".submit").click();
-    //$('html, body').animate({ scrollTop: $('.timetable-wrapper').offset().top }, 1000);
  },
 
  componentWillUnmount: function() {
@@ -37,13 +34,14 @@ var Generate = React.createClass({
     return subjectList;
  },
 
-
  getEvent: function(subject,type) {
 
-  let event;
-    $.get(`/section/${subject.code}/${subject[type]}/${type}`,(result) => {
 
+    console.log("load-event :",subject.code);
+  
+    return $.get(`/section/${subject.code}/${subject[type]}/${type}`,(result) => {
 
+      let event;
       result.name = subject.name;
       result.eventId = subject.eventId;
 
@@ -57,12 +55,15 @@ var Generate = React.createClass({
           tempEvent[field] = period[field];
         }
 
-        return tempEvent
+        return tempEvent;
       })
+
+      this.setState({
+        ajaxResult : this.state.ajaxResult.concat(event),
+      })
+
     })
 
-  return event;
- 
  },
  setHours: function(hours) {
 
@@ -78,63 +79,76 @@ var Generate = React.createClass({
 
  },
 
- submit: function() {
-    let subjectList = this.getSubjectList();
+ submit: function(needSave) {
+    loadingStart();
 
-    // this.reload();
+    let subjectList = this.getSubjectList();
 
     let minStart = Infinity;
     let maxEnd = 0;
-
     let eventId = 0;
+    let deferreds = [];
 
-    let ttEvents = [];
-
-    subjectList.sort(function(a, b) {return a.start-b.start;});
-    
     subjectList.forEach((subject) => {
 
       subject.eventId = eventId;
 
-      if(subject.lec!=='-') ttEvents=ttEvents.concat(this.getEvent(subject,"lec"));
-      if(subject.lab!=='-') ttEvents=ttEvents.concat(this.getEvent(subject,"lab"));
+      if(subject.lec!=='-') deferreds.push(this.getEvent(subject,"lec"));
+      if(subject.lab!=='-') deferreds.push(this.getEvent(subject,"lab"));
 
       eventId+=1;
     })
 
-    ttEvents.forEach((event) => {
-      let start = Math.floor(event.start);
-      let end = Math.ceil(event.end);
+    $.when.apply(null, deferreds).done( () => {
+      
+      console.log("load-event complete !!");
 
-      if(start < minStart) minStart = start;
-      if(end > maxEnd)     maxEnd = end;
-    });
+      let ttEvents = $.extend(true, [], this.state.ajaxResult);
 
-    ttEvents.map((event) => {
-      event.duration = event.end-event.start;
-      event.start=event.start-minStart;
-      delete event.end;
-      return event;
-    })
+      ttEvents.sort(function(a, b) {return a.start-b.start;});
 
-    
+      ttEvents.forEach((event) => {
+        let start = Math.floor(event.start);
+        let end = Math.ceil(event.end);
 
-    this.setState({
-      ttEvents,
-      ttHours : (maxEnd ? maxEnd-minStart : 8),
-      minStart : (maxEnd ? minStart : 8),
-    },function(){
-      this.setHours();
-      this.reload();
-      $('.timetable-wrapper').slideDown();
-    });
-    
+        if(start < minStart) minStart = start;
+        if(end > maxEnd)     maxEnd = end;
+      });
+
+      ttEvents.map((event) => {
+        event.duration = event.end-event.start;
+        event.start=event.start-minStart;
+        delete event.end;
+        return event;
+      })
+
+      this.setState({
+        ttEvents,
+        ttHours : (maxEnd ? maxEnd-minStart : 8),
+        minStart : (maxEnd ? minStart : 8),
+        ajaxResult : [],
+      },function(){
+        this.setHours();
+        this.reload();
+
+        $('.timetable-wrapper').slideDown();
+        loadingComplete();
+
+        if (needSave) {
+          this.props.saveTable();
+        } else {
+          $('html, body').animate({ scrollTop: $('.timetable-wrapper').offset().top }, 1000);
+        }
+
+      });
+
+    }); 
+ 
  },
 
  reload: function () {
 
-  console.log("reload");
-
+  console.log("reloading");
 
    $('.timetable').each(function (e) {
      $(this).initialiseTT();
@@ -147,7 +161,7 @@ var Generate = React.createClass({
 
    return (
       <section className='generate'>
-        <div className='submit' onClick={this.submit}><span className='text'>Go!</span></div>
+        <div className='submit' onClick={this.submit.bind(null,true)}><span className='text'>Go!</span></div>
         <div className='timetable-wrapper'>
           <div className='timetable' data-days='7' data-hours={this.state.ttHours}>
             <ul className='tt-events'>

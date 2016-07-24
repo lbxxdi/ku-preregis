@@ -2,16 +2,19 @@ var Manage = React.createClass({
 
   getInitialState: function() {
     return {
-     subjectList: [
-       // {"code":"01204111","name":"Computers & Programming","lec":"1","lab":"11"},
-       // {"code":"01005471","name":"Computer Programming in Agricultural System","lec":"1","lab":"-"},
-       // {"code":"01999011","name":"Food for Mankind","lec":"1","lab":"-"}
+      subjectList: [
       ],
     };
   },
 
   getSubjectList: function() {
    return this.state.subjectList;
+  },
+
+  setSubjectList: function(subjectList) {
+    this.setState({
+      subjectList
+    });
   },
   
   removeSubject: function(subject) {

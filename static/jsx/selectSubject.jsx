@@ -117,8 +117,17 @@ var SelectSubject = React.createClass({
   },
 
   sendSubject: function() {
-    if(!this.state.secSelectorDisable)
-      this.props.addSubject(this.state.currentSubject);
+
+    this.props.addSubject(this.state.currentSubject);
+
+    this.setState({
+      searchString: "",
+      sectionList: {
+       "LAB" : [],
+       "LEC" : [],
+      },
+    });
+
   },
 
  render: function() {

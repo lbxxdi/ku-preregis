@@ -21,8 +21,8 @@ def create_period(t,code):
     try:
         day = dayweek[date_split[0]]
     except:
-        if t not in [ "ติดต่อผู้สอน", "ดต่อภาควิชา", "ดต่อผู้สอน",""] :
-            print(code,"incorrect day :",t)
+        if t not in ["ติดต่อผู้สอน", "ดต่อภาควิชา", "ดต่อผู้สอน", ""]:
+            print(code,"incorrect day :", t)
         return period
 
     time = ".".join(date_split[1:])

@@ -6,10 +6,71 @@ var Main = React.createClass({
 
  componentDidMount: function() {
   loadingStart();
+
+  let params = this.getGetParam()
+
+  if (params.token) {
+    this.loadTable(params.token);
+  }
+
+ },
+
+ getGetParam : function() {
+    let GET = {}; 
+    location.search.substr(1).split("&").forEach(function(item) {item = item.split("=");GET[item[0]] = item[1]})
+    return GET
  },
 
  getSubjectList : function() {
     return this.refs.manage.getSubjectList();
+ },
+
+ loadTable : function(token) {
+
+    console.log("loadTable")
+
+    $.get(`/load/${token}`,(result) => {
+      //console.log(result);
+      this.refs.manage.setSubjectList(result.subject_list);
+      this.refs.generate.submit(false);
+
+    }).fail(() => {
+      document.location.href = '/'
+    });
+
+
+ },
+ saveTable : function() {
+
+    console.log("saveTable");
+
+    let subjectList = this.getSubjectList();
+
+    if (subjectList.length==0) {
+      return;
+    }
+
+    let params = this.getGetParam();
+
+    let postData = {
+      subject_list: subjectList,
+    };
+
+    if (params.token) {
+      postData.token = params.token;
+    }
+
+    $.ajax({
+      url:`/save`,
+      type:"POST",
+      data:JSON.stringify(postData),
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      success: function(result){
+        window.history.pushState('KU-PreRegis', 'KU-PreRegis', '?token='+result.token);
+      }
+    })
+
  },
 
  render: function() {
@@ -29,7 +90,7 @@ var Main = React.createClass({
 
         <article className='paragraph'>
           <header>Step 2 : Generate your table, just click Go!.</header>
-          <Generate getSubjectList={this.getSubjectList}/>
+          <Generate ref="generate" getSubjectList={this.getSubjectList} saveTable={this.saveTable}/>
         </article>
 
         <div className='footer'>
