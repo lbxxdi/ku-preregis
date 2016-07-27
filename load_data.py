@@ -22,7 +22,7 @@ def create_period(t,code):
         day = dayweek[date_split[0]]
     except:
         if t not in ["ติดต่อผู้สอน", "ดต่อภาควิชา", "ดต่อผู้สอน", ""]:
-            print(code,"incorrect day :", t)
+            print(code,"incorrect day :")#, t)
         return period
 
     time = ".".join(date_split[1:])
@@ -92,7 +92,7 @@ def parse_line(i):
 
     subject= {}
 
-    if '<br /><' in html_doc:
+    if html_doc.startswith("<br /><p class='text_error' align='center'>"):
         subject['code'] = list_header[2]
         subject['name'] = list_header[0]
         return False

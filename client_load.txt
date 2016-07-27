@@ -1,0 +1,84 @@
+function submitForm(cs_code, year, semester)
+{
+//      document.getElementById("course_name").innerHTML='';
+
+    if (cs_code=="")
+    {
+        alert ("กรุณาป้อนข้อมูลที่คอลัมน์ \"รหัสวิชา\" ");
+        document.ajax.cs_code.focus();
+        return ;
+    }
+    if (cs_code.length<8)
+    {
+        alert ("กรุณาป้อนข้อมูลรหัสวิชาด้วยตัวเลข 8 หลัก ");
+        document.ajax.cs_code.focus();
+        return ;
+    }
+
+
+    var req = null;
+
+    document.getElementById("mySpan").innerHTML="Started...";
+
+    if (window.XMLHttpRequest)
+    {
+        req = new XMLHttpRequest();
+
+    }
+    else if (window.ActiveXObject)
+    {
+        try {
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e)
+        {
+            try {
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {}
+        }
+        }
+
+
+    req.onreadystatechange = function()
+    {
+        document.getElementById("mySpan").innerHTML="<br /><br /><center>Now is Loading...</center>";
+        if(req.readyState == 4)
+        {
+            if(req.status == 200)
+            {
+
+console.log(req.responseText); // my code is here only 1 line;
+                document.getElementById("mySpan").innerHTML=req.responseText;
+            }
+            else
+            {
+                document.getElementById("mySpan").innerHTML="Error: returned status code " + req.status + " " + req.statusText;
+            }
+        }
+    };
+
+        var url = '_webcourse_data.php';
+    req.open("POST", url, true);
+    var key_field = "key_field=" + cs_code + "|" + year + "|" + semester;
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=windows-874")
+    req.send(key_field);
+
+/*
+    var url = '_webcourse_data.php?key_field=' + cs_code + '|' + year + '|' + semester;
+    req.open("POST", url, true);
+    req.send(null);
+*/
+
+
+
+}
+
+var subjectList = []
+for(var id in codeArray) { subjectList.push(id); }
+
+
+console.log(subjectList.length);
+
+
+for(var id in subjectList){
+    put_code(subjectList[id]);
+}
