@@ -39,7 +39,7 @@ var Generate = React.createClass({
 
     console.log("load-event :",subject.code);
   
-    return $.get(`/section/${subject.code}/${subject[type]}/${type}`,(result) => {
+    return $.get(`/api/section/${subject.code}/${subject[type]}/${type}`,(result) => {
 
       let event;
       result.name = subject.name;

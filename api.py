@@ -12,18 +12,7 @@ mongo = PyMongo(application, config_prefix='MONGO3')
 application.config['JSON_AS_ASCII'] = False
 
 
-@application.route('/')
-def root():
-    return application.send_static_file('index.html')
-
-
-@application.route('/<path:path>')
-def static_proxy(path):
-    # send_static_file will guess the correct MIME type
-    return application.send_static_file(path)
-
-
-@application.route('/section/<code>/<int:sec>/<type>')
+@application.route('/api/section/<code>/<int:sec>/<type>')
 def section_detail(code, sec, type):
 
     type = type.lower()
@@ -40,7 +29,7 @@ def section_detail(code, sec, type):
     return jsonify(**section)
 
 
-@application.route('/subject/<code>')
+@application.route('/api/subject/<code>')
 def subject_detail(code):
 
     subject = mongo.db.subject.find_one_or_404(dict(code=code), dict(_id=0))
@@ -57,7 +46,7 @@ def subject_detail(code):
     return jsonify(**subject)
 
 
-@application.route('/load/<token>')
+@application.route('/api/load/<token>')
 def load_table(token):
 
     table = mongo.db.table.find_one_or_404(dict(token=token), dict(_id=0))
@@ -65,7 +54,7 @@ def load_table(token):
     return jsonify(**table)
 
 
-@application.route('/save', methods=['POST'])
+@application.route('/api/save', methods=['POST'])
 def save_table():
 
     if not request.json:
@@ -84,7 +73,7 @@ def save_table():
     return jsonify(dict(token=token))
 
 
-@application.route('/subjects')
+@application.route('/api/subjects')
 def list_subject():
 
     exclude = dict(_id=0, section=0)
@@ -98,11 +87,6 @@ def list_subject():
     subjects = mongo.db.subject.find({}, exclude)
 
     return jsonify(*subjects)
-
-
-@application.route("/test")
-def test():
-    return jsonify(request.args)
 
 
 if __name__ == "__main__":

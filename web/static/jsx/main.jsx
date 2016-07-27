@@ -29,7 +29,7 @@ var Main = React.createClass({
 
     console.log("loadTable")
 
-    $.get(`/load/${token}`,(result) => {
+    $.get(`/api/load/${token}`,(result) => {
       //console.log(result);
       this.refs.manage.setSubjectList(result.subject_list);
       this.refs.generate.submit(false);
@@ -61,7 +61,7 @@ var Main = React.createClass({
     }
 
     $.ajax({
-      url:`/save`,
+      url:`/api/save`,
       type:"POST",
       data:JSON.stringify(postData),
       contentType:"application/json; charset=utf-8",

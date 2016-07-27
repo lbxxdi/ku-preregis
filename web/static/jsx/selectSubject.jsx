@@ -58,7 +58,7 @@ var SelectSubject = React.createClass({
 
   componentDidMount: function() {
     
-    this.serverRequest = $.get("/subjects", function (result) {
+    this.serverRequest = $.get("/api/subjects", function (result) {
       this.setState({  
         subjects: result,//.slice(0,10)
       },loadingComplete);
@@ -84,7 +84,7 @@ var SelectSubject = React.createClass({
    });
 
    loadingStart();
-   this.serverRequest = $.get(`/subject/${subject.code}`, function (result) {
+   this.serverRequest = $.get(`/api/subject/${subject.code}`, function (result) {
      this.setState({  
        sectionList: result.section,//.slice(0,10)
      },function() {
