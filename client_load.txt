@@ -47,7 +47,7 @@ function submitForm(cs_code, year, semester)
             {
 
 console.log(req.responseText); // my code is here only 1 line;
-                document.getElementById("mySpan").innerHTML=req.responseText;
+//document.getElementById("mySpan").innerHTML=req.responseText;
             }
             else
             {
@@ -78,7 +78,15 @@ for(var id in codeArray) { subjectList.push(id); }
 
 console.log(subjectList.length);
 
+var counter = 0;
+setInterval(function(){
+    if(subjectList[counter])
+    {
+        put_code(subjectList[counter]);
+    }
+    else{
+    console.log("FINISHED !!");
+    }
+    counter++;
+}, 10);
 
-for(var id in subjectList){
-    put_code(subjectList[id]);
-}
