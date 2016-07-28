@@ -44,7 +44,7 @@ var Manage = React.createClass({
    let cloneSubject = $.extend(true, {}, subject);
    let findSubject = this.findIndexSubjectInList(cloneSubject);
 
-   if(findSubject<0) {
+   if(findSubject<0 && subject.code && subject.name) {
      subjectList.push(cloneSubject);
    }
 
