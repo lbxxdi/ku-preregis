@@ -177,10 +177,10 @@ if __name__ == '__main__':
     lines = f.readlines()[:to_line]
 
     client = MongoClient('localhost', 27017)
-    db_subject = client.preregis.subject
 
 
-    db_subject.drop()
+
+
 
     pool = Pool()
 
@@ -203,14 +203,16 @@ if __name__ == '__main__':
 
     print("subject count",len(subjects))
 
+    db_subject = client.preregis.subject
+    db_subject.drop()
     db_subject.insert_many(subjects)
 
     print("inserted subjects.",db_subject.count())
 
 
-    db_section = client.preregis.section
 
-    db_section.drop()
+
+
 
 
     sections = []
@@ -226,6 +228,8 @@ if __name__ == '__main__':
 
     print("section count",len(sections))
 
+    db_section = client.preregis.section
+    db_section.drop()
     db_section.insert_many(sections) 
 
     print("inserted section.",db_section.count())
