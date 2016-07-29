@@ -59,6 +59,7 @@ def create_period(t,code):
     try:
         e_hr,e_m = e.split(".")
     except:
+        if e=="19300": e = "1930"
         if(len(e) == 4 and int(e)):
             e_hr,e_m = e[0:2],e[2:4]
         else:
