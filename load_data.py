@@ -40,10 +40,12 @@ def create_period(t,code):
         except:
             raise ValueError(code,"incorrect time format :",time)
         print(code,"incorrect time format:",time)    
-        
+
+    if s=="t9.00": s = "9.00"
     try:
         s_hr,s_m = s.split(".")
     except:
+
         if(len(s) == 4 and int(s)):
             s_hr,s_m = s[0:2],s[2:4]
         else:
@@ -55,7 +57,7 @@ def create_period(t,code):
     except:    
         raise ValueError(code,"cannot int start-time",s)
 
-
+    if e=="19300": e = "19.30"
     try:
         e_hr,e_m = e.split(".")
     except:
