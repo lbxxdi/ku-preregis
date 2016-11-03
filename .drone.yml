@@ -1,4 +1,0 @@
-image: python3.3
-script:
-- echo hello world
-- python -c "for i in range(1000000): print(i)"
